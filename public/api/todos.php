@@ -13,13 +13,14 @@
             require_once("get/".$action.".php");
             break;
         case "POST":
-            $output["message"] = "Post request made";
+            require_once("post/".$action.".php");
             break;
         case "PUT": 
             $output["message"] = "Put request made";
             break;
         case "PATCH": 
-            $output["message"] = "Patch request made";
+            $_PATCH = json_decode(file_get_contents("php://input"), true);
+            require_once("patch/".$action.".php");
             break;
         case "DELETE": 
             $output["message"] = "delete request made";

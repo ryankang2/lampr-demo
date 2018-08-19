@@ -67,7 +67,13 @@ class ToDoList extends Component {
         e.preventDefault();
         // Item @ this.state.newItem
         // Use post method to send new item to DB
-        const response = {data: {success: true}}; // Remove
+        // const response = {data: {success: true}}; // Remove
+        const dataToSend = formatPostData(this.state.newItem);
+        const response = await axios.post("/api/todos.php", dataToSend, {
+            params: {
+                action: "add_item"
+            }
+        })
 
         const { errors, success } = response.data;
 
@@ -104,7 +110,11 @@ class ToDoList extends Component {
         };
 
         // Use patch request to update item based on id
-
+        const response = await axios.patch("/api/todos.php", dataToSend, {
+            params: {
+                action: "toggle_complete"
+            }
+        });
         this.getListData();
     }
 
@@ -126,7 +136,7 @@ class ToDoList extends Component {
 
         return (
             <div className="to-do-list">
-                <h1 className="center cyan-text text-accent-4">To Do List</h1>
+                <h1 className="center cyan-text text-accent-4">List</h1>
                 <form onSubmit={this.addItem} className="row">
                     <Input name="title" label="Title" value={title} onChange={this.handleInputChange} submitted={submitted} focus />
                     <Input name="details" label="Details" value={details} onChange={this.handleInputChange} submitted={submitted} />
